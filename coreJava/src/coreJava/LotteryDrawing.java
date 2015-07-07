@@ -1,0 +1,44 @@
+package coreJava;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class LotteryDrawing {
+	@SuppressWarnings("resource")
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		System.out.println("How many number do you need to draw?");
+		int k = in.nextInt();
+		System.out.println("What is the highest number you can draw?");
+		int n = in.nextInt();
+		
+		//fill numbers with number 1 2 3 ... n
+		int[] numbers = new int[n];
+		for(int i=0;i<numbers.length;i++)
+			numbers[i] = i+1;
+		
+		int[] result = new int[k];
+		for(int i=0;i<result.length;i++)
+		{
+			//make a random index between 0 and n-1
+			int r =(int)(Math.random()*n);
+			
+			//pick the element at the random location
+			result[i] = numbers[r];
+			
+			//move the last element into the random location
+			numbers[r] = numbers[n-1];
+			n--;
+			//choose 1 of n to r;n--
+		}
+		
+		//print the array
+		
+		Arrays.sort(result);
+		System.out.println("Bet the follwing combinaion.It'll make you rich!");
+		for(int r:result)
+			System.out.println(r);
+	}
+}
+
+
