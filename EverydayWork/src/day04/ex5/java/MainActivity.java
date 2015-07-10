@@ -1,33 +1,31 @@
 package com.demacia.app.layout;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 
 public class MainActivity extends ActionBarActivity {
     TextView textview;
     Button button;
     EditText editText;
-    String str ;
+    String str;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        textview =(TextView) findViewById(R.id.textview);
+        textview = (TextView) findViewById(R.id.textview);
         button = (Button) findViewById(R.id.button);
+ 
         editText = (EditText) findViewById(R.id.edittext);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -37,7 +35,6 @@ public class MainActivity extends ActionBarActivity {
                 textview.setText(str);
             }
         });
-
 
     }
 
