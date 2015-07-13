@@ -23,8 +23,6 @@ public class MainActivity extends ActionBarActivity {
     private String next = null;
     private String sign = null;
     private String result = null;
-    private static byte operator = -1;
-    private int signcount = 0;
     private boolean dotFlag = true;
     private boolean numFlag = true;
 
@@ -62,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     if (!numFlag) {
-                        //if numFlag = false set all to begin
+                        //it mean that it has done some calculating before, so when numFlag = false set all to begin
                         textViewBottom.setText("");
                         textViewBottom.setHint("0");
                         textviewTop.setText("");
@@ -80,14 +78,14 @@ public class MainActivity extends ActionBarActivity {
         button[10].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //reset all textview and sign textview,flag
                 textviewTop.setText("");
                 textViewMid.setText("");
                 textViewBottom.setText("");
                 signtop.setText("");
                 signbottom.setText("");
                 dotFlag = true;
-                signcount = 0;
-                operator = -1;
             }
         });
 
@@ -167,14 +165,36 @@ public class MainActivity extends ActionBarActivity {
         for (int index = 12; index < 16; ++index) {
             button[index].setOnClickListener(new View.OnClickListener() {
                 @Override
+
+                //when input nothing we cannot use sign
                 public void onClick(View v) {
-                    sign = ((Button) findViewById(v.getId())).getText().toString();
-                    signbottom.setText(sign);
-                    operator = operatorNum(sign);
-                    prev = textViewBottom.getText().toString();
-                    textViewMid.setText(prev);
-                    signbottom.setText("");
-                    dotFlag=true;
+                    //
+                    //      ********
+                    //  []  ********
+                    if (!textViewBottom.getText().toString().equals("")) {
+                        if (sign == null) {
+                            //has finished all calculating before
+                            sign = ((Button) findViewById(v.getId())).getText().toString();
+                            signbottom.setText(sign);
+                            prev = textViewBottom.getText().toString();
+                            textViewMid.setText(prev);
+                            textViewBottom.setText("");
+                            signbottom.setText(sign);
+                            dotFlag = true;
+                        } else {
+                            //      *********
+                            //  []  *********
+                            //  =   *********
+
+                            textviewTop.setText(textViewMid.getText().toString());
+                            next = textViewBottom.getText().toString();
+                            textViewMid.setText(next);
+                            signtop.setText(signbottom.getText().toString());
+                            signbottom.setText("=");
+                            textViewBottom.setText(calculator(sign, Double.parseDouble(prev), Double.parseDouble(next)) + "");
+                            sign = null;
+                        }
+                    }
                 }
             });
         }
@@ -217,14 +237,30 @@ public class MainActivity extends ActionBarActivity {
         button[16].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textviewTop.setText(textViewMid.getText().toString());
-                next = textViewBottom.getText().toString();
-                textViewMid.setText(next);
-                signtop.setText(signbottom.getText().toString());
-                signbottom.setText("=");
-                textViewBottom.setText(calculator(sign, Double.parseDouble(prev), Double.parseDouble(next)) + "");
+                //when you use = to get result ,u can only use + - * / to continue calculating or use number to reset all to begin
+                //so we need to set numFlag to false
+                //
+                //      *********
+                //  =   *********
+                if(!(signtop.getText().toString()).equals("=")) {
+                    textviewTop.setText(textViewMid.getText().toString());
+                    next = textViewBottom.getText().toString();
+                    textViewMid.setText(next);
+                    signtop.setText(signbottom.getText().toString());
+                    signbottom.setText("=");
+                    textViewBottom.setText(calculator(sign, Double.parseDouble(prev), Double.parseDouble(next)) + "");
+                    sign = null;
+                    numFlag = false;
+
+                    //what about if we use = to continue? we need to judge signTop ?= "="
+                }else {
+                    textviewTop.setText(textViewMid.getText().toString());
+                    textViewBottom.setText(textViewMid.getText().toString());
+                    signbottom.setText("=");
+                }
             }
         });
+
 
     }
 
@@ -254,13 +290,13 @@ public class MainActivity extends ActionBarActivity {
             default:
                 return -99999999;
         }*/
-        if (sign == "+")
+        if (sign.equals("+"))
             return plus(num1, num2);
-        if (sign == "-")
+        if (sign.equals("-"))
             return minus(num1, num2);
-        if (sign == "*")
+        if (sign.equals("*"))
             return multiply(num1, num2);
-        if (sign == "/")
+        if (sign.equals("/"))
             return divide(num1, num2);
         return Double.MAX_VALUE;
     }
