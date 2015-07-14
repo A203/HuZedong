@@ -1,4 +1,4 @@
-package com.demacia.app.calculator2;
+package com.demacia.app.calculator;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

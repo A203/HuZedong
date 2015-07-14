@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.0"
 
     defaultConfig {
-        applicationId "com.demacia.app.calculator2"
+        applicationId "com.demacia.app.calculator"
         minSdkVersion 10
         targetSdkVersion 22
         versionCode 1
