@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
     private String next = "";
     private String sign = "";
     private String result = "";
-    private boolean dotFlag = true;
+    private static boolean dotFlag = true;
     private boolean numFlag = true;
 
     @Override
@@ -64,17 +64,7 @@ public class MainActivity extends ActionBarActivity {
                         // [] ********      ---->
                         // =  ********                      0  hint
                         //it mean that it has done some calculating before, so when numFlag = false set all to begin
-                        textViewBottom.setText("");
-                        textViewBottom.setHint("0");
-                        textViewTop.setText("");
-                        textViewMid.setText("");
-                        signtop.setText("");
-                        signmid.setText("");
-                        signbottom.setText("");
-                        numFlag = true;
-                        prev = "";
-                        next = "";
-                        dotFlag = true;
+                        reset();
                     }
                     //if numFlag = true bottom set text
                     textViewBottom.append(((Button) findViewById(v.getId())).getText());
@@ -92,12 +82,13 @@ public class MainActivity extends ActionBarActivity {
                 //           0                      //= *********
                 String input = textViewBottom.getText().toString();
                 String sign = signbottom.getText().toString();
-                if (!(input.equals(""))&&!sign.equals("=")) {
+                if (!(input.equals("")) && !sign.equals("=")) {
                     //
                     //                  --->
                     // *********                ******
-                        textViewBottom.setText(stringCut(input));
+                    textViewBottom.setText(stringCut(input));
                 }
+
             }
         });
 
@@ -106,19 +97,7 @@ public class MainActivity extends ActionBarActivity {
         button[10].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //reset all textview and sign textview,flag
-                textViewTop.setText("");
-                textViewMid.setText("");
-                textViewBottom.setText("");
-                textViewBottom.setHint("0");
-                signtop.setText("");
-                signmid.setText("");
-                signbottom.setText("");
-                numFlag = true;
-                prev = "";
-                next = "";
-                dotFlag = true;
+                reset();
             }
         });
 
@@ -249,12 +228,28 @@ public class MainActivity extends ActionBarActivity {
                         textViewBottom.setText(calculator(signmid.getText().toString(), Double.parseDouble(prev), Double.parseDouble(next)) + "");
                         numFlag = false;
                     }
-
+                    dotFlag=false;
                 }
             }
         });
 
 
+    }
+
+
+    private void reset() {
+        //reset all textview and sign textview,flag
+        textViewTop.setText("");
+        textViewMid.setText("");
+        textViewBottom.setText("");
+        textViewBottom.setHint("0");
+        signtop.setText("");
+        signmid.setText("");
+        signbottom.setText("");
+        numFlag = true;
+        prev = "";
+        next = "";
+        dotFlag = true;
     }
 
     static double calculator(String sign, double num1, double num2) {
@@ -271,6 +266,8 @@ public class MainActivity extends ActionBarActivity {
 
     static String stringCut(String string) {
         char[] temp = new char[string.length() - 1];
+        if (string.charAt(string.length()-1) == '.')
+            dotFlag = true;
         string.getChars(0, string.length() - 1, temp, 0);
         String s = new String(temp);
         return s;
@@ -313,4 +310,6 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
